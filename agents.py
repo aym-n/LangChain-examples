@@ -18,4 +18,27 @@ agent_executor = create_sql_agent(
     agent_type= AgentType.ZERO_SHOT_REACT_DESCRIPTION,
 )
 
-agent_executor.invoke("name the top 5 albums with the most tracks and the number of tracks in each album")
+import streamlit as st
+
+st.title("Chinook Database Q&A")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+if prompt := st.chat_input("What is up?"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        message = agent_executor.invoke(prompt)
+        message_placeholder.write(message['output'])
+
+    st.session_state.messages.append({"role": "assistant", "content": message['output']})
+
+
