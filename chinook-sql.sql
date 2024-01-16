@@ -262,7 +262,6 @@ INSERT INTO [Genre] ([GenreId], [Name]) VALUES (22, 'Comedy');
 INSERT INTO [Genre] ([GenreId], [Name]) VALUES (23, 'Alternative');
 INSERT INTO [Genre] ([GenreId], [Name]) VALUES (24, 'Classical');
 INSERT INTO [Genre] ([GenreId], [Name]) VALUES (25, 'Opera');
-
 INSERT INTO [MediaType] ([MediaTypeId], [Name]) VALUES (1, 'MPEG audio file');
 INSERT INTO [MediaType] ([MediaTypeId], [Name]) VALUES (2, 'Protected AAC audio file');
 INSERT INTO [MediaType] ([MediaTypeId], [Name]) VALUES (3, 'Protected MPEG-4 video file');
