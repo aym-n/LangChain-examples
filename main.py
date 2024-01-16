@@ -1,8 +1,8 @@
 import streamlit as st
 
-st.title("SQLang")
+st.title("SQLang 🔮")
 st.write("Use the chatbot to ask questions about the Chinook database")
-st.caption ("You can ask questions like 'List all artist.' or 'How many track are there in the album 'relapse'?'")
+st.caption ("You can ask Questions like 'What is the total number of tracks in the database?' or 'List all the tables in the database'")
 
 st.sidebar.title("Settings")
 
@@ -20,7 +20,12 @@ st.divider()
 
 st.sidebar.title("About")
 
-st.sidebar.info("")
+st.sidebar.info(" SQLang 🔮 allows user to write seamless natural language database queries,  powered by LangChain, Streamlit, and Google's LLM models (Gemini-Pro and Text-Bison).  it uses LangChain's  zero-shot SQL agent and a SQL database chain with is enhanced using few-shot examples.")
+
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+    st.session_state.messages.append({"role": "assistant", "content": "Hi! How can i help you?"})
+
 
 from langchain_google_genai import GoogleGenerativeAI
 
@@ -41,8 +46,10 @@ from langchain.agents.agent_types import AgentType
 from langchain_community.agent_toolkits.sql.toolkit import SQLDatabaseToolkit
 from langchain.prompts import SemanticSimilarityExampleSelector
 from langchain_community.vectorstores.faiss import FAISS
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-vector_db = FAISS.load_local("vector_db")
+embeddings = GoogleGenerativeAIEmbeddings(google_api_key=GOOGLE_API_KEY, model="models/embedding-001")
+vector_db = FAISS.load_local("vector_db",  embeddings)
 selector = SemanticSimilarityExampleSelector(vectorstore=vector_db, k=k)
 
 from langchain.chains.sql_database.prompt import _sqlite_prompt, PROMPT_SUFFIX
@@ -72,10 +79,6 @@ SQLAgent = create_sql_agent(
     toolkit=SQLDatabaseToolkit(db=db, llm=llm),
     agent_type= AgentType.ZERO_SHOT_REACT_DESCRIPTION,
 )
-
-
-if "messages" not in st.session_state:
-    st.session_state.messages = []
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
