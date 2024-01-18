@@ -6,10 +6,6 @@ st.caption ("You can ask Questions like 'What is the total number of tracks in t
 
 st.sidebar.title("Settings")
 
-model = st.sidebar.selectbox(
-    'LLM',
-    ('models/text-bison-001', 'gemini-pro'))
-
 method = st.sidebar.selectbox(
     'LangChain Methods',
     ('SQL Chain + FewShot', 'SQL Agent'))
@@ -31,11 +27,7 @@ from langchain_google_genai import GoogleGenerativeAI
 
 GOOGLE_API_KEY = st.secrets["API_KEY"]
 
-from langchain.memory import ConversationBufferMemory
-
-memory = ConversationBufferMemory()
-
-llm= GoogleGenerativeAI(google_api_key=GOOGLE_API_KEY, model=model)
+llm= GoogleGenerativeAI(google_api_key=GOOGLE_API_KEY, model="text-bison-001")
 
 from langchain_community.utilities.sql_database import SQLDatabase
 db = SQLDatabase.from_uri("sqlite:///chinook.db")
